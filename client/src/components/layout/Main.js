@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { searchItem } from '../../api/api';
+import { searchItems, getItem } from '../../api/api';
 
 class Main extends Component {
 
@@ -14,29 +14,28 @@ class Main extends Component {
     }
   }
 
-  validate = () => {
-    console.log(this.state.searchedQuery.length);
-    if (this.state.searchedQuery.length === 0) {
-      console.log('test2');
-      this.setState({ error: 'Searched song/movie must contain at least 1 character' });
-      return false;
-    }
-    return true;
-  }
-
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onGetItem = itemID => {
+    getItem(itemID).then(result => {
+      console.log(result);
+      this.props.history.push({
+        pathname: "/item-info",
+        state: {
+          name: itemID
+        }
+      });
+    })
+  }
+
   onSubmit = e => {
     e.preventDefault();
-    const isValid = this.validate();
-    if (isValid) {
-      searchItem(this.state.searchedQuery).then(({ results, resultCount }) => {
-        this.setState({ searchResults: results, resultCount });
-        console.log(this.state.searchResults);
-      });
-    }
+    searchItems(this.state.searchedQuery).then(({ results, resultCount }) => {
+      this.setState({ searchResults: results, resultCount });
+      console.log(this.state.searchResults);
+    });
   }
 
   render() {
@@ -44,7 +43,7 @@ class Main extends Component {
     const searchItems = searchResults.length ? (
       searchResults.map(item => {
         return (
-          <div className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
+          <div onClick={() => this.onGetItem(item.trackId)} className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
             <img className="card-img-top" src={item.artworkUrl100} alt={item.trackName}></img>
             <div className="card-body">
               <h5 className="card-title">{item.trackName}</h5>
