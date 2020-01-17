@@ -48,7 +48,7 @@ class Login extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Login</h1>
+              <h1 className="display-4 text-center mb-5">Login</h1>
               <form onSubmit={this.onSubmit} noValidate>
                 <div className="form-group">
                   <input type="email" className="form-control form-control-lg" value={this.state.email}
@@ -67,13 +67,12 @@ class Login extends Component {
       </div>
     )
   }
-
 }
 
 Login.protoTypes = {
   loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.func.isRequired,
-  err: PropTypes.func.isRequired
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({

@@ -1,4 +1,4 @@
-import { FETCH_SONGS } from '../actions/types';
+import { FETCH_SONGS, SET_SELECTED_SONG } from '../actions/types';
 
 const initialState = {
   songs: [],
@@ -13,6 +13,11 @@ export default function (state = initialState, action) {
         ...state,
         songs: action.payload.results,
         resultCount: action.payload.resultCount
+      }
+    case SET_SELECTED_SONG:
+      return {
+        ...state,
+        selectedSong: action.payload
       }
     default:
       return state;

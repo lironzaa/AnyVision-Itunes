@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { FETCH_SONGS } from './types';
+import { FETCH_SONGS, GET_ERRORS, SET_SELECTED_SONG } from './types';
 
 export const fetchSongs = searchedQuery => dispatch => {
   axios.post(`${process.env.REACT_APP_API_URL}search?term=${searchedQuery}&limit=25`)
@@ -9,17 +9,14 @@ export const fetchSongs = searchedQuery => dispatch => {
       payload: searchResults.data
     }))
     .catch(err => dispatch({
-      type: FETCH_SONGS,
-      payload: err.response.data
+      type: GET_ERRORS,
+      payload: err
     }));
 }
 
-/* export const searchItems = searchedQuery => {
-  return axios.post(`${process.env.REACT_APP_API_URL}search?term=${searchedQuery}&limit=25`)
-    .then(searchResults => {
-      return searchResults.data;
-    })
-    .catch(error => {
-      console.log(error);
-    })
-} */
+export const setSelectedSong = songData => {
+  return {
+    type: SET_SELECTED_SONG,
+    payload: songData
+  }
+}

@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchSongs } from '../../actions/songsActions';
+import { fetchSongs, setSelectedSong } from '../../actions/songsActions';
 
 class Main extends Component {
-
   constructor() {
     super();
     this.state = {
       searchedQuery: '',
       songs: [],
-      resultCount: null
+      resultCount: null,
+      error: ''
     }
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated === false) this.props.history.push('/login');
+  }
+
   static getDerivedStateFromProps(props) {
-    console.log(props);
     return {
       songs: props.songs.songs,
-      resultCount: props.songs.resultCount
+      resultCount: props.songs.resultCount,
+      error: props.errors.message
     };
   }
 
@@ -26,8 +30,10 @@ class Main extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onGetItem = itemID => {
-    console.log(itemID);
+  onGetItem = selectedSong => {
+    this.props.setSelectedSong(selectedSong);
+    console.log(selectedSong);
+    this.props.history.push('/item-info');
   }
 
   onSubmit = e => {
@@ -36,11 +42,12 @@ class Main extends Component {
   }
 
   render() {
-    const { songs, resultCount } = this.state;
+    const { songs, resultCount, error } = this.state;
+
     const searchItems = songs.length ? (
       songs.map(item => {
         return (
-          <div onClick={() => this.onGetItem(item.trackId)} className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
+          <div onClick={() => this.onGetItem(item)} className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
             <img className="card-img-top" src={item.artworkUrl100} alt={item.trackName}></img>
             <div className="card-body">
               <h5 className="card-title">{item.trackName}</h5>
@@ -52,6 +59,15 @@ class Main extends Component {
         )
       })
     ) : resultCount === null ? <div className="mx-auto">Please search for a song/movie</div> : <div className="mx-auto">No results for this search</div>;
+
+    const errorMessage = error !== undefined ?
+      <div className="row mt-5">
+        <div className="col-md-8 m-auto text-center">
+          <div className="alert alert-danger" role="alert">
+            <p className="lead">{error}</p>
+          </div>
+        </div>
+      </div> : <Fragment></Fragment>;
 
     return (
       <div className="main">
@@ -75,18 +91,24 @@ class Main extends Component {
         <div className="row mt-5">
           {searchItems}
         </div>
+        {errorMessage}
       </div>
     )
   }
 }
 
 Main.protoTypes = {
-  fetchSongs: PropTypes.func.isRequired
+  fetchSongs: PropTypes.func.isRequired,
+  setSelectedSong: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+  songs: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
   songs: state.songs,
-  errors: state.errors
+  errors: state.errors,
+  auth: state.auth
 })
 
-export default connect(mapStateToProps, { fetchSongs })(Main);
+export default connect(mapStateToProps, { fetchSongs, setSelectedSong })(Main);

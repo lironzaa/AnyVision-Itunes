@@ -46,7 +46,7 @@ class Register extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Register</h1>
+              <h1 className="display-4 text-center mb-5">Register</h1>
               <form onSubmit={this.onSubmit} noValidate>
                 <div className="form-group">
                   <input type="email" className="form-control form-control-lg" value={this.state.email}
@@ -64,7 +64,6 @@ class Register extends Component {
       </div>
     )
   }
-
 }
 
 Register.propTypes = {
