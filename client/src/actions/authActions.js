@@ -13,7 +13,7 @@ export const registerUser = (userData, history) => dispatch => {
     }));
 }
 
-export const loginUser = userData => dispatch => {
+export const loginUser = (userData, history) => dispatch => {
   axios.post(`${process.env.REACT_APP_BACKEND_URL}users/login`, userData)
     .then(res => {
       const { token } = res.data;
@@ -21,6 +21,7 @@ export const loginUser = userData => dispatch => {
       setAuthToken(token);
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
+      history.push('/');
     })
     .catch(err => dispatch({
       type: GET_ERRORS,
@@ -33,4 +34,11 @@ export const setCurrentUser = decoded => {
     type: SET_CURRENT_USER,
     payload: decoded
   }
+}
+
+export const logoutUser = history => dispatch => {
+  localStorage.removeItem('jwtToken');
+  setAuthToken(false);
+  dispatch(setCurrentUser({}));
+  history.push('/login');
 }

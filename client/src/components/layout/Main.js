@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
-import { searchItems } from '../../api/api';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchSongs } from '../../actions/songsActions';
 
 class Main extends Component {
 
@@ -8,10 +9,17 @@ class Main extends Component {
     super();
     this.state = {
       searchedQuery: '',
-      searchResults: [],
-      resultCount: null,
-      error: ''
+      songs: [],
+      resultCount: null
     }
+  }
+
+  static getDerivedStateFromProps(props) {
+    console.log(props);
+    return {
+      songs: props.songs.songs,
+      resultCount: props.songs.resultCount
+    };
   }
 
   onChange = e => {
@@ -24,16 +32,13 @@ class Main extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    searchItems(this.state.searchedQuery).then(({ results, resultCount }) => {
-      this.setState({ searchResults: results, resultCount });
-      console.log(this.state.searchResults);
-    });
+    this.props.fetchSongs(this.state.searchedQuery);
   }
 
   render() {
-    const { error, searchResults, resultCount } = this.state;
-    const searchItems = searchResults.length ? (
-      searchResults.map(item => {
+    const { songs, resultCount } = this.state;
+    const searchItems = songs.length ? (
+      songs.map(item => {
         return (
           <div onClick={() => this.onGetItem(item.trackId)} className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
             <img className="card-img-top" src={item.artworkUrl100} alt={item.trackName}></img>
@@ -61,10 +66,7 @@ class Main extends Component {
             <form onSubmit={this.onSubmit} noValidate>
               <div className="form-group">
                 <input type="text" value={this.state.searchedQuery}
-                  className={classnames("form-control form-control-lg", {
-                    'is-invalid': error
-                  })} onChange={this.onChange} placeholder="Search" name="searchedQuery" />
-                {error && (<div className="invalid-feedback">{error}</div>)}
+                  className="form-control form-control-lg" onChange={this.onChange} placeholder="Search" name="searchedQuery" />
               </div>
               <input type="submit" value="Search" className="btn btn-info btn-block mt-4" />
             </form>
@@ -78,4 +80,13 @@ class Main extends Component {
   }
 }
 
-export default Main;
+Main.protoTypes = {
+  fetchSongs: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  songs: state.songs,
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { fetchSongs })(Main);

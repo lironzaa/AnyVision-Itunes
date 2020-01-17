@@ -13,12 +13,15 @@ class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated === true) this.props.history.push('/');
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated) {
-      this.props.history.push('/');
-    }
+    console.log(nextProps);
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+      console.log(this.state);
     }
   }
 
@@ -35,7 +38,7 @@ class Login extends Component {
     }
 
     console.log(userData);
-    this.props.loginUser(userData);
+    this.props.loginUser(userData, this.props.history);
   }
 
   render() {
