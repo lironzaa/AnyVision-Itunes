@@ -57,7 +57,7 @@ class Main extends Component {
     ) : resultCount === null ? <div className="mx-auto">Please search for a song/movie</div> : <div className="mx-auto">No results for this search</div>;
 
     return (
-      <div className="container main">
+      <div className="main">
         <div className="row">
           <div className="col-md-12 text-center">
             <h1 className="display-3 mb-4">AnyVision Itunes</h1>
