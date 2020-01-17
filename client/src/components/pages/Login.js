@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../../actions/authActions';
 
 class Login extends Component {
   constructor() {
@@ -10,6 +13,15 @@ class Login extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push('/');
+    }
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value })
   }
@@ -17,12 +29,13 @@ class Login extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const newUser = {
+    const userData = {
       email: this.state.email,
       password: this.state.password
     }
 
-    console.log(newUser);
+    console.log(userData);
+    this.props.loginUser(userData);
   }
 
   render() {
@@ -54,4 +67,15 @@ class Login extends Component {
 
 }
 
-export default Login;
+Login.protoTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.func.isRequired,
+  err: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })(Login);

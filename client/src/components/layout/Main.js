@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { searchItems, getItem } from '../../api/api';
+import { searchItems } from '../../api/api';
 
 class Main extends Component {
 
@@ -19,15 +19,7 @@ class Main extends Component {
   }
 
   onGetItem = itemID => {
-    getItem(itemID).then(result => {
-      console.log(result);
-      this.props.history.push({
-        pathname: "/item-info",
-        state: {
-          name: itemID
-        }
-      });
-    })
+    console.log(itemID);
   }
 
   onSubmit = e => {
