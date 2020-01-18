@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ReactPlayer from 'react-player';
 
 class ItemInfo extends Component {
   constructor() {
@@ -35,6 +36,9 @@ class ItemInfo extends Component {
             <p className="card-text"><span className="font-weight-bold">Track Price :</span> {selectedSong.trackPrice} $</p>
             <p className="card-text"><span className="font-weight-bold">Album Price :</span> {selectedSong.collectionPrice} $</p>
             <img className="card-img-top" style={{ width: '300px', height: '300px' }} src={selectedSong.artworkUrl100} alt={selectedSong.trackName}></img>
+            <div>
+              <ReactPlayer className="mx-auto mt-5 border border-info" url={selectedSong.previewUrl} controls />
+            </div>
           </div>
         </Fragment>
       )
