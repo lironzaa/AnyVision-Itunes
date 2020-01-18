@@ -30,13 +30,10 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
     const newUser = {
       email: this.state.email,
       password: this.state.password
     }
-
-    console.log(newUser);
     this.props.registerUser(newUser, this.props.history);
   }
 

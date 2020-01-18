@@ -10,14 +10,14 @@ router.post('/search', [auth], (req, res) => {
     return res.status(400).json(errors);
   }
 
-  Query.findOne({ searchedQuery: req.body.searchedQuery })
+  Query.findOne({ searchedQuery: req.body.searchedQuery, user: req.user })
     .then(query => {
       if (query) {
         Query.updateOne(
-          { searchedQuery: query.searchedQuery },
+          { searchedQuery: query.searchedQuery, user: req.user },
           { $inc: { count: 1, } })
           .then(query => res.json(query))
-          .catch(err => console.log(err));
+          .catch(err => res.json(err));
       } else {
         const newQuery = new Query({
           searchedQuery: req.body.searchedQuery,
@@ -26,17 +26,17 @@ router.post('/search', [auth], (req, res) => {
         })
         newQuery.save()
           .then(query => res.json(query))
-          .catch(err => console.log(err));
+          .catch(err => res.json(err));
       }
     })
 });
 
 router.get('/getTop10', [auth], (req, res) => {
-  Query.find()
+  Query.find({ user: req.user })
     .sort({ count: -1 })
     .limit(10)
-    .then(query => res.json(query))
-    .catch(err => console.log(err))
+    .then(queries => res.json(queries))
+    .catch(err => res.json(err))
 });
 
 module.exports = router;

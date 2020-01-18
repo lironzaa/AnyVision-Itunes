@@ -1,4 +1,7 @@
 export const GET_ERRORS = 'GET_ERRORS';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const FETCH_SONGS = 'FETCH_SONGS';
 export const SET_SELECTED_SONG = 'SET_SELECTED_SONG';
+export const GET_TOP_10_QUERIES = 'GET_TOP_10_QUERIES';
+export const CLEAR_SONGS = 'CLEAR_SONGS';
