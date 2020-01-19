@@ -21,7 +21,6 @@ export const fetchSongs = searchedQuery => dispatch => {
 
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: {

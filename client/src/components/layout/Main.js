@@ -36,7 +36,6 @@ class Main extends Component {
 
   onGetItem = selectedSong => {
     this.props.setSelectedSong(selectedSong);
-    console.log(selectedSong);
     this.props.history.push('/item-info');
   }
 
