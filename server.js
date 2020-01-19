@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const distDir = __dirname + "/dist/";
+const path = require('path');
+
 const users = require('./routes/api/users');
 const auth = require('./routes/api/auth');
 const queries = require('./routes/api/queries');
 
 const app = express();
-app.use(express.static(distDir));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
