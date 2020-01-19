@@ -55,7 +55,7 @@ class Main extends Component {
     const searchItems = songs.length ? (
       songs.map(item => {
         return (
-          <div onClick={() => this.onGetItem(item)} className="col-lg-2 col-md-6 col-sm-10 card mr-4 mb-5" key={item.trackId}>
+          <div onClick={() => this.onGetItem(item)} className="col-lg-2 col-md-6 col-sm-10 card mb-5" key={item.trackId}>
             <img className="card-img-top" src={item.artworkUrl100} alt={item.trackName}></img>
             <div className="card-body">
               <h5 className="card-title">{item.trackName}</h5>
@@ -69,15 +69,20 @@ class Main extends Component {
     ) : resultCount === null ? <div className="mx-auto">Please search for a song/movie</div> : <div className="mx-auto">No results for this search</div>;
 
     const Top10Queries = isShowingTop10 === true ?
-      top10Queries.map((query, index) => {
-        return (
-          <div className="row" key={query._id}>
-            <div className="alert alert-info col-md-4 mx-auto" role="alert" >
-              <div className="text-center"><h4>{index + 1} - {query.searchedQuery}</h4></div>
+      top10Queries.length > 0 ?
+        (top10Queries.map((query, index) => {
+          return (
+            <div className="row" key={query._id}>
+              <div className="alert alert-info col-md-4 mx-auto" role="alert" >
+                <div className="text-center"><h4>{index + 1} - {query.searchedQuery}</h4></div>
+              </div>
             </div>
-          </div>
-        )
-      }) : <Fragment></Fragment>;
+          )
+        }))
+        : <div className="col-md-8 m-auto text-center">
+          <p>You have not yet searched for any songs</p>
+        </div>
+      : <Fragment></Fragment>;
 
     const isShowingSongs = isShowingTop10 === false ? searchItems : <Fragment></Fragment>;
 
