@@ -15,30 +15,30 @@ import Login from './components/pages/Login';
 import './App.css';
 
 if (localStorage.jwtToken) {
-  setAuthToken(localStorage.jwtToken);
-  const decoded = jwt_decode(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(decoded));
-  const currentTime = Date.now() / 1000;
-  if (decoded.exp < currentTime) {
-    store.dispatch(logoutUser());
-    window.location.href = '/login';
-  }
+    setAuthToken(localStorage.jwtToken);
+    const decoded = jwt_decode(localStorage.jwtToken);
+    store.dispatch(setCurrentUser(decoded));
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+        store.dispatch(logoutUser());
+        window.location.href = '/login';
+    }
 }
 
 function App() {
-  return (
-    <Provider store={store}>
-      <Router>
-        <Navbar />
-        <div className="container">
-          <Route exact path="/" component={Main} />
-          <Route exact path="/item-info" component={ItemInfo} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-        </div>
-      </Router >
-    </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <Router>
+                <Navbar/>
+                <div className="container">
+                    <Route exact path="/" component={Main}/>
+                    <Route exact path="/item-info" component={ItemInfo}/>
+                    <Route exact path="/register" component={Register}/>
+                    <Route exact path="/login" component={Login}/>
+                </div>
+            </Router>
+        </Provider>
+    );
 }
 
 export default App;
