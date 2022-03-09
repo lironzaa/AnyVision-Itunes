@@ -49,5 +49,5 @@ export const logoutUser = history => dispatch => {
     dispatch(setCurrentUser({}));
     dispatch(clearSongs({}));
     dispatch(clearErrors({}));
-    history.push('/login');
+    if (history) history.push('/login');
 }

@@ -31,7 +31,6 @@ class Main extends Component {
     }
 
     onChange = e => {
-        console.log(3);
         this.setState({ [e.target.name]: e.target.value });
     }
 
